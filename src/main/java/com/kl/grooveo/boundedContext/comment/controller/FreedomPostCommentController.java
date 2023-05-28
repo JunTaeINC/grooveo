@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,7 @@ public class FreedomPostCommentController {
     private final Rq rq;
 
     @PostMapping("/create/{id}")
-    public String createAnswer(Model model, @PathVariable("id") Long id,
+    public String create(Model model, @PathVariable("id") Long id,
                                @Valid CommentForm commentForm, BindingResult bindingResult) {
 
         FreedomPost freedomPost = freedomPostService.getFreedomPost(id);
@@ -41,5 +42,15 @@ public class FreedomPostCommentController {
         FreedomPostComment freedomPostComment = freedomPostCommentService.create(freedomPost, commentForm.getContent(), member);
         return String.format("redirect:/community/freedomPost/detail/%s#comment_%s",
                 freedomPostComment.getFreedomPost().getId(), freedomPostComment.getId());
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") Long id) {
+        FreedomPostComment freedomPostComment = this.freedomPostCommentService.getComment(id);
+//        if (!freedomPostComment.getAuthor().getUsername().equals(principal.getName())) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+//        }
+        this.freedomPostCommentService.delete(freedomPostComment);
+        return String.format("redirect:/community/freedomPost/detail/%s", freedomPostComment.getFreedomPost().getId());
     }
 }

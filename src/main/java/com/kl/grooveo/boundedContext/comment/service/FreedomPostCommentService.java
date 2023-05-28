@@ -1,5 +1,6 @@
 package com.kl.grooveo.boundedContext.comment.service;
 
+import com.kl.grooveo.base.exception.DataNotFoundException;
 import com.kl.grooveo.boundedContext.comment.entity.FreedomPostComment;
 import com.kl.grooveo.boundedContext.comment.repository.FreedomPostCommentRepository;
 import com.kl.grooveo.boundedContext.community.entity.FreedomPost;
@@ -23,5 +24,15 @@ public class FreedomPostCommentService {
         this.freedomPostCommentRepository.save(freedomPostComment);
 
         return freedomPostComment;
+    }
+
+    public FreedomPostComment getComment(Long id) {
+        return this.freedomPostCommentRepository.findById(id).orElseThrow(
+                () -> new DataNotFoundException("해당 댓글을 찾을 수 없습니다.")
+        );
+    }
+
+    public void delete(FreedomPostComment freedomPostComment) {
+        this.freedomPostCommentRepository.delete(freedomPostComment);
     }
 }
