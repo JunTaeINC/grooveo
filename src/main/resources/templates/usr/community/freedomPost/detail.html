@@ -19,17 +19,20 @@
 
         <span class="text-xl font-bold">댓글 쓰기</span>
         <!-- 댓글 작성 -->
-        <form th:action="@{|/community/freedomPost/comment/${freedomPost.id}|}" th:object="${commentForm}" method="post">
-            <textarea class="textarea textarea-primary w-full max-w-ls form-control" placeholder="content" th:field="*{content}" rows="10"></textarea>
-            <input type="submit" value="댓글 등록">
+        <form th:action="@{|/comment/create/${freedomPost.id}|}" th:object="${commentForm}" method="post">
+            <textarea class="textarea textarea-primary w-full max-w-ls form-control" placeholder="content" th:field="*{content}" rows="4"></textarea>
+            <input type="submit" class="btn btn-primary" value="댓글 등록">
         </form>
 
         <!-- 댓글의 갯수 표시 -->
         <h5 th:text="|${#lists.size(freedomPost.commentList)}개의 댓글이 있습니다.|"></h5>
-        <div>
-            <ul>
-                <li th:each="comment : ${freedomPost.commentList}" th:text="${freedomPost.content}"></li>
-            </ul>
+        <div class="card w-full bg-base-100 shadow-xl my-2" th:each="comment : ${freedomPost.commentList}">
+            <div class="card-body">
+                <p th:text="${comment.content}"></p>
+<!--                <div class="card-actions justify-end">-->
+<!--                    <button class="btn btn-primary"></button>-->
+<!--                </div>-->
+            </div>
         </div>
     </div>
 

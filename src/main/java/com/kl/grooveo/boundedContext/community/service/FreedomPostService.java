@@ -1,5 +1,6 @@
 package com.kl.grooveo.boundedContext.community.service;
 
+import com.kl.grooveo.base.exception.DataNotFoundException;
 import com.kl.grooveo.boundedContext.community.entity.FreedomPost;
 import com.kl.grooveo.boundedContext.community.repository.FreedomPostRepository;
 import com.kl.grooveo.boundedContext.member.entity.Member;
@@ -18,15 +19,6 @@ public class FreedomPostService {
         return this.freedomPostRepository.findAll();
     }
 
-    public FreedomPost getMoreInformation(Long id) throws Exception{
-        Optional<FreedomPost> freedomPost = this.freedomPostRepository.findById(id);
-        if (freedomPost.isPresent()) {
-            return freedomPost.get();
-        } else {
-            throw new Exception();
-        }
-    }
-
     public void create(String title, String category, String content, Member author) {
         FreedomPost freedomPost = new FreedomPost();
         freedomPost.setTitle(title);
@@ -37,13 +29,10 @@ public class FreedomPostService {
         this.freedomPostRepository.save(freedomPost);
     }
 
-    public FreedomPost getFreedomPost(Long id) throws Exception {
-        Optional<FreedomPost> freedomPost = this.freedomPostRepository.findById(id);
-        if (freedomPost.isPresent()) {
-            return freedomPost.get();
-        } else {
-            throw new Exception();
-        }
+    public FreedomPost getFreedomPost(Long id) {
+        return this.freedomPostRepository.findById(id).orElseThrow(
+                () -> new DataNotFoundException("해당 글을 찾을 수 없습니다.")
+        );
     }
 
     public void delete(FreedomPost community) {
