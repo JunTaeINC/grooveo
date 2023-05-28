@@ -1,5 +1,7 @@
 package com.kl.grooveo.base.initData;
 
+import com.kl.grooveo.boundedContext.community.entity.FreedomPost;
+import com.kl.grooveo.boundedContext.community.service.FreedomPostService;
 import com.kl.grooveo.boundedContext.member.entity.Member;
 import com.kl.grooveo.boundedContext.member.service.MemberService;
 import org.springframework.boot.CommandLineRunner;
@@ -21,7 +23,6 @@ public class NotProd {
             @Transactional
             public void run(String... args) throws Exception {
                 Member memberUser1 = memberService.join("user1", "1234", "유저1", "유유", "uu@naver.com").getData();
-
             }
         };
     }

@@ -1,6 +1,6 @@
 <div>
   <h3>게시글 등록</h3>
-  <form th:object="${communityForm}" method="post">
+  <form th:action="@{/community/freedomPost/create}" th:object="${freedomPostForm}" method="post">
     <div>
       <label for="title" class="form-label">제목</label><br/>
       <input type="text" th:field="*{title}" class="form-control">

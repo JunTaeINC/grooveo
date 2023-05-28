@@ -1,25 +1,39 @@
-<button th:onclick="|location.href='@{/community/create}'|">
-  게시글 등록하기
-</button>
-<table>
-  <thead>
-  <tr>
-    <th>번호</th>
-    <th>카테고리</th>
-    <th>제목</th>
-    <th>글쓴이</th>
-    <th>날짜</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="community : ${communityList}">
-    <td th:text="${community.id}"></td>
-    <td th:text="${community.category}"></td>
-    <td>
-      <a th:href="@{|/community/detail/${community.id}|}" th:text="${community.title}"></a>
-    </td>
-    <td th:text="${community.author}"></td>
-    <td th:text="${community.createDate}"></td>
-  </tr>
-  </tbody>
-</table>
+<html layout:decorate="~{usr/layout/layout.html}">
+
+<head>
+    <title>자유 게시판</title>
+</head>
+
+<body>
+
+<main layout:fragment="main">
+    <span class="text-2xl font-bold">자유 게시판</span>
+    <a th:href="@{/community/freedomPost/create}" class="btn btn-primary">글쓰기</a>
+
+    <table class="table">
+        <thead class="table-dark">
+        <tr class="text-center">
+            <th>번호</th>
+            <th>카테고리</th>
+            <th style="width:50%">제목</th>
+            <th>글쓴이</th>
+            <th>날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="freedomPost : ${freedomPostList}">
+            <td th:text="${freedomPost.id}"></td>
+            <td th:text="${freedomPost.category}"></td>
+            <td>
+                <a th:href="@{|/community/freedomPost/detail/${freedomPost.id}|}"
+                   th:text="${freedomPost.title}"></a>
+            </td>
+            <td th:text="${freedomPost.author.username}"></td>
+            <td th:text="${freedomPost.createDate}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+
+</html>

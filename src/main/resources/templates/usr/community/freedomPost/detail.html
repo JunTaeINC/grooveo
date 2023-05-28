@@ -1,10 +1,13 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<h1 th:text="${community.title}"></h1>
-<h3 th:text="${community.category}"></h3>
-<div th:text="${community.content}"></div>
+<h1 th:text="${freedomPost.title}"></h1>
+<h3 th:text="${freedomPost.category}"></h3>
+<div th:text="${freedomPost.content}"></div>
 <button onclick="if(confirm('정말로 삭제하시겠습니까?')) $(this).next().submit();">삭제</button>
-<form hidden th:action="@{|/community/${community.id}|}" method="POST">
+<form hidden th:action="@{|/community/freedomPost/${freedomPost.id}|}" method="POST">
     <input type="hidden" name="_method" value="delete">
 </form>
-<button th:onclick="|location.href='@{/community/modify/} + ${community.id}'|">수정</button>
+<button th:onclick="|location.href='@{/community/freedomPost/modify/} + ${freedomPost.id}'|">수정</button>
+
+
+

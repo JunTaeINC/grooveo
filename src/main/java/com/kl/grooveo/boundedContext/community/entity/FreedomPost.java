@@ -1,5 +1,6 @@
 package com.kl.grooveo.boundedContext.community.entity;
 
+import com.kl.grooveo.boundedContext.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,10 +21,11 @@ public class FreedomPost {
     @Column
     private String title;
 
+    @ManyToOne
+    private Member author;
+
     @Column(columnDefinition = "TEXT")
     private String content;
-
-    private String author;
 
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;

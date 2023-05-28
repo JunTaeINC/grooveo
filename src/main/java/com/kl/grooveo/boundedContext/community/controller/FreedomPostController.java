@@ -1,8 +1,9 @@
 package com.kl.grooveo.boundedContext.community.controller;
 
+import com.kl.grooveo.base.rq.Rq;
 import com.kl.grooveo.boundedContext.community.entity.FreedomPost;
-import com.kl.grooveo.boundedContext.form.FreedomPostForm;
 import com.kl.grooveo.boundedContext.community.service.FreedomPostService;
+import com.kl.grooveo.boundedContext.form.FreedomPostForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import java.util.List;
 @Controller
 public class FreedomPostController {
     private final FreedomPostService freedomPostService;
+    private final Rq rq;
 
     @GetMapping("/list")
     public String showList(Model model) {
@@ -43,14 +45,13 @@ public class FreedomPostController {
         if (bindingResult.hasErrors()) {
             return "usr/community/freedomPost/form";
         }
-        String author = "test_user1";
 
-        this.freedomPostService.create(freedomPostForm.getTitle(), freedomPostForm.getCategory(), freedomPostForm.getContent(), author);
+        this.freedomPostService.create(freedomPostForm.getTitle(), freedomPostForm.getCategory(), freedomPostForm.getContent(), rq.getMember());
         return "redirect:/community/freedomPost/list";
     }
 
     @DeleteMapping("/{id}")
-    public String freedomPostDelete(Principal principal, @PathVariable("id") Long id) throws Exception {
+    public String freedomPostDelete(@PathVariable("id") Long id) throws Exception {
         FreedomPost freedomPost = this.freedomPostService.getFreedomPost(id);
 //        if (!freedomPost.getAuthor().getUsername().equals(principal.getName())) {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
@@ -60,7 +61,7 @@ public class FreedomPostController {
     }
 
     @GetMapping("/modify/{id}")
-    public String freedomPostModify(FreedomPostForm freedomPostForm, @PathVariable("id") Long id, Principal principal) throws Exception {
+    public String freedomPostModify(FreedomPostForm freedomPostForm, @PathVariable("id") Long id) throws Exception {
         FreedomPost freedomPost = this.freedomPostService.getFreedomPost(id);
 //        if(!freedomPost.getAuthor().getUsername().equals(principal.getName())) {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
@@ -73,7 +74,7 @@ public class FreedomPostController {
 
     @PostMapping("/modify/{id}")
     public String freedomPostModify(@Valid FreedomPostForm freedomPostForm, BindingResult bindingResult,
-                                    Principal principal, @PathVariable("id") Long id) throws Exception {
+                                    @PathVariable("id") Long id) throws Exception {
         if (bindingResult.hasErrors()) {
             return "usr/community/freedomPost/form";
         }
@@ -81,8 +82,7 @@ public class FreedomPostController {
 //        if (!freedomPost.getAuthor().getUsername().equals(principal.getName())) {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
 //        }
-        String user = "test_user1";
-        this.freedomPostService.modify(freedomPost, freedomPostForm.getTitle(), freedomPostForm.getCategory(), freedomPostForm.getContent(), user);
+        this.freedomPostService.modify(freedomPost, freedomPostForm.getTitle(), freedomPostForm.getCategory(), freedomPostForm.getContent());
         return String.format("redirect:/community/freedomPost/detail/%s", id);
     }
 }

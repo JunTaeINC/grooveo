@@ -2,6 +2,7 @@ package com.kl.grooveo.boundedContext.community.service;
 
 import com.kl.grooveo.boundedContext.community.entity.FreedomPost;
 import com.kl.grooveo.boundedContext.community.repository.FreedomPostRepository;
+import com.kl.grooveo.boundedContext.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,11 @@ public class FreedomPostService {
         }
     }
 
-    public void create(String title, String category, String content, String user) {
+    public void create(String title, String category, String content, Member author) {
         FreedomPost freedomPost = new FreedomPost();
         freedomPost.setTitle(title);
         freedomPost.setContent(content);
-        freedomPost.setAuthor(user);
+        freedomPost.setAuthor(author);
         freedomPost.setCreateDate(LocalDateTime.now());
         freedomPost.setCategory(category);
         this.freedomPostRepository.save(freedomPost);
@@ -49,7 +50,7 @@ public class FreedomPostService {
         this.freedomPostRepository.delete(community);
     }
 
-    public void modify(FreedomPost freedomPost, String title, String category, String content, String user) {
+    public void modify(FreedomPost freedomPost, String title, String category, String content) {
         freedomPost.setTitle(title);
         freedomPost.setContent(content);
         freedomPost.setModifyDate(LocalDateTime.now());
