@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-public class Community {
+public class FreedomPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
