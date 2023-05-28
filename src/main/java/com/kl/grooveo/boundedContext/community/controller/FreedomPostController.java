@@ -3,6 +3,7 @@ package com.kl.grooveo.boundedContext.community.controller;
 import com.kl.grooveo.base.rq.Rq;
 import com.kl.grooveo.boundedContext.community.entity.FreedomPost;
 import com.kl.grooveo.boundedContext.community.service.FreedomPostService;
+import com.kl.grooveo.boundedContext.form.CommentForm;
 import com.kl.grooveo.boundedContext.form.FreedomPostForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @RequestMapping("/community/freedomPost")
@@ -29,7 +29,7 @@ public class FreedomPostController {
     }
 
     @GetMapping(value = "/detail/{id}")
-    public String showMoreDetail(Model model, @PathVariable("id") Long id) throws Exception {
+    public String showMoreDetail(Model model, @PathVariable("id") Long id, CommentForm commentForm) throws Exception {
         FreedomPost freedomPost = this.freedomPostService.getMoreInformation(id);
         model.addAttribute("freedomPost", freedomPost);
         return "usr/community/freedomPost/detail";

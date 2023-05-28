@@ -1,13 +1,40 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<html layout:decorate="~{usr/layout/layout.html}">
 
-<h1 th:text="${freedomPost.title}"></h1>
-<h3 th:text="${freedomPost.category}"></h3>
-<div th:text="${freedomPost.content}"></div>
-<button onclick="if(confirm('정말로 삭제하시겠습니까?')) $(this).next().submit();">삭제</button>
-<form hidden th:action="@{|/community/freedomPost/${freedomPost.id}|}" method="POST">
-    <input type="hidden" name="_method" value="delete">
-</form>
-<button th:onclick="|location.href='@{/community/freedomPost/modify/} + ${freedomPost.id}'|">수정</button>
+<head>
+    <title></title>
+</head>
 
+<body>
 
+<main layout:fragment="main">
+    <div class="flex flex-col align-center mx-auto w-4/6">
+        <span class="text-3xl font-bold" th:text="${freedomPost.title}"></span>
+        <span class="text-xl font-bold" th:text="${freedomPost.category}"></span>
+        <div class="w-full max-w-ls" th:text="${freedomPost.content}"></div>
+        <button class="btn btn-block btn-primary gap-1" onclick="if(confirm('정말로 삭제하시겠습니까?')) $(this).next().submit();">삭제</button>
+        <form hidden th:action="@{|/community/freedomPost/${freedomPost.id}|}" method="POST">
+            <input type="hidden" name="_method" value="delete">
+        </form>
+        <button class="btn btn-block btn-primary gap-1" th:onclick="|location.href='@{/community/freedomPost/modify/} + ${freedomPost.id}'|">수정</button>
+
+        <span class="text-xl font-bold">댓글 쓰기</span>
+        <!-- 댓글 작성 -->
+        <form th:action="@{|/community/freedomPost/comment/${freedomPost.id}|}" th:object="${commentForm}" method="post">
+            <textarea class="textarea textarea-primary w-full max-w-ls form-control" placeholder="content" th:field="*{content}" rows="10"></textarea>
+            <input type="submit" value="댓글 등록">
+        </form>
+
+        <!-- 댓글의 갯수 표시 -->
+        <h5 th:text="|${#lists.size(freedomPost.commentList)}개의 댓글이 있습니다.|"></h5>
+        <div>
+            <ul>
+                <li th:each="comment : ${freedomPost.commentList}" th:text="${freedomPost.content}"></li>
+            </ul>
+        </div>
+    </div>
+
+</main>
+</body>
+
+</html>
 
