@@ -6,6 +6,7 @@ import com.kl.grooveo.boundedContext.comment.service.FreedomPostCommentService;
 import com.kl.grooveo.boundedContext.community.entity.FreedomPost;
 import com.kl.grooveo.boundedContext.community.service.FreedomPostService;
 import com.kl.grooveo.boundedContext.form.CommentForm;
+import com.kl.grooveo.boundedContext.form.ReplyForm;
 import com.kl.grooveo.boundedContext.member.entity.Member;
 import com.kl.grooveo.boundedContext.member.service.MemberService;
 import jakarta.validation.Valid;
@@ -29,7 +30,7 @@ public class FreedomPostCommentController {
 
     @PostMapping("/create/{id}")
     public String create(Model model, @PathVariable("id") Long id,
-                               @Valid CommentForm commentForm, BindingResult bindingResult) {
+                         @Valid CommentForm commentForm, BindingResult bindingResult, ReplyForm replyForm) {
 
         FreedomPost freedomPost = freedomPostService.getFreedomPost(id);
         Member member = memberService.findByUsername(rq.getMember().getUsername()).orElseThrow();
@@ -40,7 +41,7 @@ public class FreedomPostCommentController {
         }
 
         FreedomPostComment freedomPostComment = freedomPostCommentService.create(freedomPost, commentForm.getContent(), member);
-        return String.format("redirect:/community/freedomPost/detail/%s#comment_%s",
+        return String.format("redirect:/community/freedomPost/detail/%s#comment-%s",
                 freedomPostComment.getFreedomPost().getId(), freedomPostComment.getId());
     }
 
