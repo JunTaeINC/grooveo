@@ -24,10 +24,11 @@ public class FreedomPostController {
     static int boardTypeCode;
 
     @GetMapping("/{boardType}/list")
-    public String showList(Model model, @PathVariable("boardType") Integer boardType, CategoryForm categoryForm) {
-        List<FreedomPost> freedomPostList = this.freedomPostService.getList(boardType, categoryForm.options);
+    public String showList(Model model, @PathVariable("boardType") Integer boardType, @RequestParam(value = "kw", defaultValue = "") String kw, CategoryForm categoryForm) {
+        List<FreedomPost> freedomPostList = this.freedomPostService.getList(boardType, categoryForm.options, kw);
         model.addAttribute("freedomPostList", freedomPostList);
         model.addAttribute("boardType", boardType);
+        model.addAttribute("kw", kw);
         boardTypeCode = boardType;
 
         return "usr/community/freedomPost/list";
