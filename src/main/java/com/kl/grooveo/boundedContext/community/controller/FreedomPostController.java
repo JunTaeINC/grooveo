@@ -8,6 +8,7 @@ import com.kl.grooveo.boundedContext.form.FreedomPostForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,10 +25,11 @@ public class FreedomPostController {
     static int boardTypeCode;
 
     @GetMapping("/{boardType}/list")
-    public String showList(Model model, @PathVariable("boardType") Integer boardType, @RequestParam(value = "kw", defaultValue = "") String kw, CategoryForm categoryForm) {
-        List<FreedomPost> freedomPostList = this.freedomPostService.getList(boardType, categoryForm.options, kw);
-        model.addAttribute("freedomPostList", freedomPostList);
+    public String showList(Model model, @PathVariable("boardType") Integer boardType, @RequestParam(value="page", defaultValue="0") int page,
+                           @RequestParam(value = "kw", defaultValue = "") String kw, CategoryForm categoryForm) {
+        Page<FreedomPost> paging = this.freedomPostService.getList(boardType, categoryForm.options, kw, page);
         model.addAttribute("boardType", boardType);
+        model.addAttribute("paging", paging);
         model.addAttribute("kw", kw);
         boardTypeCode = boardType;
 

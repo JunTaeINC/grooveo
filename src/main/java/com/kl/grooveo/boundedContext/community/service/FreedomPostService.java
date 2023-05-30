@@ -7,11 +7,16 @@ import com.kl.grooveo.boundedContext.community.repository.FreedomPostRepository;
 import com.kl.grooveo.boundedContext.member.entity.Member;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -75,9 +80,12 @@ public class FreedomPostService {
         };
     }
 
-    public List<FreedomPost> getList(Integer boardType, @Nullable String category, String kw) {
+    public Page<FreedomPost> getList(Integer boardType, @Nullable String category, String kw, int page) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         Specification<FreedomPost> spec = search(kw, boardType, category);
-        return this.freedomPostRepository.findAll(spec);
+        return this.freedomPostRepository.findAll(spec, pageable);
     }
 
     public void create(Integer boardType, String title, String category, String content, Member author) {
