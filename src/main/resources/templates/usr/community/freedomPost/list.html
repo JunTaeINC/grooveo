@@ -7,10 +7,10 @@
 <body>
 
 <main layout:fragment="main">
-    <div class="flex flex-col align-center mx-auto w-4/6">
-        <span th:if="${boardType == 1}" class="text-2xl font-bold">국외 게시판</span>
-        <span th:if="${boardType == 2}" class="text-2xl font-bold">국내 게시판</span>
-        <div class="flex flex-row justify-between">
+    <div class="flex flex-col align-center mx-auto w-4/6 my-3">
+        <span th:if="${boardType == 1}" class="text-3xl font-bold">국외 게시판</span>
+        <span th:if="${boardType == 2}" class="text-3xl font-bold">국내 게시판</span>
+        <div class="flex flex-row justify-between mt-3">
             <form th:action>
                 <div class="btn-group">
                     <input type="radio" name="options" data-title="전체" value="" class="btn" checked onclick="$(this).closest('form').submit();"/>
@@ -43,15 +43,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="freedomPost : ${freedomPostList}">
+            <tr class="text-center" th:each="freedomPost : ${freedomPostList}">
                 <td th:text="${freedomPost.id}"></td>
                 <td th:text="${freedomPost.categoryDisplayName()}"></td>
-                <td>
-                    <a th:href="@{|/community/freedomPost/detail/${freedomPost.id}|}"
-                       th:text="${freedomPost.title}"></a>
+                <td class="text-left">
+                    <label for="subject">
+                        <a id="subject" th:href="@{|/community/freedomPost/detail/${freedomPost.id}|}"
+                           th:text="${freedomPost.title}"></a>
+                    </label>
                 </td>
                 <td th:text="${freedomPost.author.username}"></td>
-                <td th:text="${freedomPost.createDate}"></td>
+                <td>
+                    <span th:text="${freedomPost.getAfterPost()}"></span>
+                    <i th:if="${freedomPost.afterPost.endsWith('전')}" class="fa-solid fa-fire text-red-500"></i></td>
             </tr>
             </tbody>
         </table>
