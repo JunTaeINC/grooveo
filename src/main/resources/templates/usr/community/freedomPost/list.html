@@ -60,7 +60,7 @@
             </thead>
             <tbody>
             <tr class="text-center" th:each="freedomPost, loop : ${paging}">
-                <td th:text="${freedomPost.id}"></td>
+                <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
                 <td th:text="${freedomPost.categoryDisplayName()}"></td>
                 <td class="text-left">
                     <label for="subject">
